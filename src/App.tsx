@@ -1,17 +1,32 @@
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
 import { BrowserRouter } from 'react-router-dom';
 import Routes from './routes';
 import AppProvider from '@/providers/AppProvider';
-import { theme } from './styles/theme';
-import { ChakraProvider } from '@chakra-ui/react';
+import {
+  Experimental_CssVarsProvider as MaterialCssVarsProvider,
+  experimental_extendTheme as materialExtendTheme,
+  THEME_ID as MATERIAL_THEME_ID,
+} from '@mui/material/styles';
+import { CssVarsProvider as JoyCssVarsProvider } from '@mui/joy/styles';
+import CssBaseline from '@mui/material/CssBaseline';
+
+const materialTheme = materialExtendTheme();
+
 function App() {
   return (
-    <ChakraProvider theme={theme} resetCSS>
-      <BrowserRouter>
-        <AppProvider>
-          <Routes />
-        </AppProvider>
-      </BrowserRouter>
-    </ChakraProvider>
+    <MaterialCssVarsProvider theme={{ [MATERIAL_THEME_ID]: materialTheme }}>
+      <JoyCssVarsProvider>
+        <CssBaseline enableColorScheme />
+        <BrowserRouter>
+          <AppProvider>
+            <Routes />
+          </AppProvider>
+        </BrowserRouter>
+      </JoyCssVarsProvider>
+    </MaterialCssVarsProvider>
   );
 }
 

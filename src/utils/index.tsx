@@ -4,11 +4,18 @@
  * @param amount O valor numérico a ser formatado.
  * @returns A string formatada como moeda.
  */
-export const formatCurrency = (amount: number) => {
-  return Intl.NumberFormat('pt-BR', {
-    style: 'currency',
-    currency: 'BRL',
-  }).format(amount);
+export const { format: formatPrice } = new Intl.NumberFormat('pt-br', {
+  style: 'currency',
+  currency: 'BRL',
+});
+
+export const formatCouponValue = (discountType: string, discount: number) => {
+  if (discountType === 'REAL' || discountType === 'real') {
+    return formatPrice(discount);
+  } else if (discountType === 'PERCENTUAL' || discountType === 'percentual') {
+    return discount?.toString() + '%';
+  }
+  return null;
 };
 
 /**
@@ -86,4 +93,31 @@ export function validarCPF(cpf: string | undefined) {
   }
 
   return true;
+}
+
+export function openSidebar() {
+  if (typeof window !== 'undefined') {
+    document.body.style.overflow = 'hidden';
+    document.documentElement.style.setProperty('--SideNavigation-slideIn', '1');
+  }
+}
+
+export function closeSidebar() {
+  if (typeof window !== 'undefined') {
+    document.documentElement.style.removeProperty('--SideNavigation-slideIn');
+    document.body.style.removeProperty('overflow');
+  }
+}
+
+export function toggleSidebar() {
+  if (typeof window !== 'undefined' && typeof document !== 'undefined') {
+    const slideIn = window
+      .getComputedStyle(document.documentElement)
+      .getPropertyValue('--SideNavigation-slideIn');
+    if (slideIn) {
+      closeSidebar();
+    } else {
+      openSidebar();
+    }
+  }
 }

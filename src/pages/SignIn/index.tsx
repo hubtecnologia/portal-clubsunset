@@ -1,92 +1,101 @@
+import { useEffect, useState } from 'react';
+import { Box, Button, Grid, Link, Typography } from '@mui/material';
+import logo from '@/assets/logo-cs.svg';
+import { keycloak } from '@/keycloakConfig';
+import Paper from '@mui/material/Paper';
+
+function Copyright(props: any) {
+  return (
+    <Typography variant='body2' color='text.secondary' align='center' {...props}>
+      {'Copyright © '}
+      <Link color='inherit' href='https://clubsunset.tech/'>
+        ClubSunset
+      </Link>{' '}
+      {new Date().getFullYear()}
+      {'.'}
+      <br />
+      {'v1.0.0 '}
+    </Typography>
+  );
+}
+
 export default function SignIn() {
-  // const { handleSubmit, control, trigger, watch } = useForm({
-  //   mode: 'onSubmit',
-  //   reValidateMode: 'onSubmit',
-  //   resolver: yupResolver(validate ? signInFormSchema : saveForLaterSchema),
-  // });
+  const [imageUrl, setImageUrl] = useState('');
 
-  // const handleGetAllCountries = useCallback(async () => {
-  //   setLoading(true);
-  //   try {
-  //     const countryResponse = await api.get('/countries');
-  //     const stateResponse = await api.get('/states');
-  //     setCountries(
-  //       countryResponse.data.map((country: any) => ({
-  //         value: country?.nome,
-  //         label: country?.nome,
-  //       })),
-  //     );
-  //     setStates(
-  //       stateResponse.data.map((state: any) => ({
-  //         value: state?.nome,
-  //         label: state?.nome,
-  //       })),
-  //     );
-  //     setLoading(false);
-  //   } catch (e) {
-  //     notification.error({
-  //       message: 'Erro!',
-  //       description:
-  //         'Ops, houve um erro ao buscar os países ou estados, favor recarregar a página, se o erro persistir, entre em contato com o suporte',
-  //       duration: 5,
-  //     });
-  //     setLoading(false);
-  //   } finally {
-  //     setLoading(false);
-  //   }
-  // }, [setLoading]);
-
-  // useEffect(() => {
-  //   handleGetAllCountries();
-  // }, [handleGetAllCountries]);
-
-  // const handleSignIn = async (values: FieldValues) => {
-  //   try {
-  //     setLoading(true);
-  //     values.status = validate ? 'COMPLETE_SUBSCRIPTION' : 'INITIAL_SUBSCRIPTION';
-  //     values.birthdate = moment(values.birthdate).format('YYYY-MM-DDTHH:mm:ss.SSS');
-  //     values.educationData = values.educationData.map((item: any) => {
-  //       return {
-  //         initialDate: item?.initialDate
-  //           ? moment(item?.initialDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
-  //           : '',
-  //         endDate: item?.endDate ? moment(item?.endDate).format('YYYY-MM-DDTHH:mm:ss.SSS') : '',
-  //       };
-  //     });
-  //     values.workData = values.workData.map((item: any) => {
-  //       return {
-  //         initialDate: item?.initialDate
-  //           ? moment(item?.initialDate).format('YYYY-MM-DDTHH:mm:ss.SSS')
-  //           : '',
-  //         endDate: item?.endDate ? moment(item?.endDate).format('YYYY-MM-DDTHH:mm:ss.SSS') : '',
-  //       };
-  //     });
-  //     await api.post('/subscriber', values);
-  //     history.push(validate ? '/confirm' : '/pending-subscription');
-  //   } catch (err) {
-  //     const error = err as AxiosError;
-  //     notification.error({
-  //       message: 'Opa! Houve um Erro!',
-  //       description: error?.response?.data.message,
-  //       duration: 5,
-  //     });
-  //     setLoading(false);
-  //   }
-  // };
+  useEffect(() => {
+    const imageUrls = [
+      'https://res.cloudinary.com/dxin0mfj4/image/upload/v1682431925/Acai%20Sunset/DSCF3050_z4ymvm.jpg',
+      'https://res.cloudinary.com/dxin0mfj4/image/upload/v1682432059/Acai%20Sunset/DSCF3062_msdtel.jpg',
+      'https://res.cloudinary.com/dxin0mfj4/image/upload/v1682425781/Acai%20Sunset/DSCF3402_wpwqlq.jpg',
+    ];
+    const randomIndex = Math.floor(Math.random() * imageUrls.length);
+    const randomImageUrl = imageUrls[randomIndex];
+    setImageUrl(randomImageUrl);
+  }, []);
 
   return (
-    <></>
-    // <Grid container spacing={2}>
-    //   <Grid xs={6}>
-    //     <Box display='flex' bgcolor='blue' width='100%'>
-    //       asdasd
-    //     </Box>
-    //   </Grid>
-    //   <Grid xs={6}>
-    //     <Box bgcolor='blue' width='100%'>
-    //       asdasd
-    //     </Box>
-    //   </Grid>
-    // </Grid>
+    <Grid container component='main' sx={{ height: '100vh' }}>
+      <Grid
+        item
+        xs={false}
+        sm={4}
+        md={7}
+        sx={{
+          backgroundImage: `url(${imageUrl})`,
+          backgroundRepeat: 'no-repeat',
+          backgroundColor: (t) =>
+            t.palette.mode === 'light' ? t.palette.grey[50] : t.palette.grey[900],
+          backgroundSize: 'cover',
+          backgroundPosition: 'center',
+        }}
+      />
+
+      <Grid item xs={12} sm={8} md={5}>
+        <Box
+          sx={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            height: '100%',
+            backgroundColor: (theme) => theme.palette.background.default,
+          }}
+        >
+          <Paper
+            sx={{ mt: 1, px: 5, py: 5, width: 500, justifyContent: 'center', alignItems: 'center' }}
+            elevation={6}
+          >
+            <Box
+              sx={{
+                display: 'flex',
+                flexDirection: 'column',
+              }}
+              justifyContent='center'
+              alignItems='center'
+            >
+              <img alt='asd' src={logo} width={150} />
+              <Typography component='h1' variant='h5'>
+                Entrar na Conta
+              </Typography>
+              <Button
+                type='submit'
+                fullWidth
+                variant='contained'
+                sx={{ mt: 3, mb: 2 }}
+                onClick={() => keycloak.login()}
+              >
+                Entrar
+              </Button>
+              <Box sx={{ display: 'flex' }} justifyContent='flex-end'>
+                <Link href='#' variant='body2'>
+                  {'Não tem uma conta? Crie aqui!'}
+                </Link>
+              </Box>
+            </Box>
+
+            <Copyright sx={{ mt: 5 }} />
+          </Paper>
+        </Box>
+      </Grid>
+    </Grid>
   );
 }

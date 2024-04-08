@@ -1,21 +1,9 @@
 import React, { forwardRef, useImperativeHandle, useRef } from 'react';
-import {
-  Box,
-  FormControl,
-  FormErrorMessage,
-  FormLabel,
-  HStack,
-  Input as ChakraInput,
-  InputProps as ChakraInputProps,
-  PinInput,
-  PinInputField,
-} from '@chakra-ui/react';
 import { Control, Controller, FieldError } from 'react-hook-form';
-import { HiXCircle } from 'react-icons/hi';
-import { Textarea } from '@chakra-ui/textarea';
 import InputMask from 'react-input-mask';
+import { TextField } from '@mui/material';
 
-interface InputProps extends ChakraInputProps {
+interface InputProps {
   control: Control;
   name: string;
   errors: any;
@@ -42,35 +30,26 @@ function Input(
     },
   }));
 
-  const getError = (message: FieldError | undefined) => {
-    if (message) {
-      return (
-        <Box mt='1' mb={{ base: '4', md: '6' }}>
-          <FormErrorMessage mb='4' color='negative.pure' gap='1' ml='1'>
-            <>
-              <HiXCircle />
-              {message}
-            </>
-          </FormErrorMessage>
-        </Box>
-      );
-    }
-    return null;
-  };
-
-  const getInputType = (onChange: any, onBlur: any, value: any, inputElementRef: any) => {
+  const getInputType = (
+    onChange: any,
+    onBlur: any,
+    value: any,
+    inputElementRef: any,
+    label: string,
+    errors: FieldError | undefined,
+  ) => {
     if (mask) {
       return (
-        <ChakraInput
-          as={InputMask}
+        <InputMask
           mask={mask}
-          focusBorderColor={errors ? 'negative.pure' : 'primary.dark'}
           onBlur={onBlur}
           onChange={onChange}
           value={value || ''}
           ref={inputElementRef}
           {...rest}
-        />
+        >
+          <TextField label={label} />
+        </InputMask>
       );
     } else if (textArea) {
       return (
@@ -86,25 +65,28 @@ function Input(
       );
     } else if (pinInput) {
       return (
-        <HStack>
-          <PinInput
-            onChange={onChange}
-            value={value || ''}
-            focusBorderColor={errors ? 'negative.pure' : 'primary.dark'}
-          >
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-            <PinInputField />
-          </PinInput>
-        </HStack>
+        <></>
+        // <HStack>
+        //   <PinInput
+        //     onChange={onChange}
+        //     value={value || ''}
+        //     focusBorderColor={errors ? 'negative.pure' : 'primary.dark'}
+        //   >
+        //     <PinInputField />
+        //     <PinInputField />
+        //     <PinInputField />
+        //     <PinInputField />
+        //     <PinInputField />
+        //     <PinInputField />
+        //   </PinInput>
+        // </HStack>
       );
     } else {
       return (
-        <ChakraInput
-          focusBorderColor={errors ? 'negative.pure' : 'primary.dark'}
+        <TextField
+          error={errors}
+          label={label}
+          type='text'
           onBlur={onBlur}
           onChange={onChange}
           value={value || ''}
@@ -119,18 +101,8 @@ function Input(
     <Controller
       control={control}
       name={name}
-      render={({ field: { onChange, onBlur, value, name, ref } }) => (
-        <>
-          <FormControl id={name} isInvalid={!!errors}>
-            {label && (
-              <FormLabel htmlFor={name} _invalid={{ color: 'negative.pure !important' }}>
-                {label}
-              </FormLabel>
-            )}
-            {getInputType(onChange, onBlur, value, ref)}
-            {getError(errors)}
-          </FormControl>
-        </>
+      render={({ field: { onChange, onBlur, value, ref } }) => (
+        <>{getInputType(onChange, onBlur, value, ref, label, errors)}</>
       )}
     />
   );

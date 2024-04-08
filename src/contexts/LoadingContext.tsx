@@ -7,11 +7,11 @@ export type LoadingContextData = {
 
 export const LoadingContext = createContext({} as LoadingContextData);
 
-type AuthContextProps = {
+type LoadingContextProps = {
   children: ReactNode;
 };
 
-export function LoadingProvider({ children }: AuthContextProps) {
+export function LoadingProvider({ children }: LoadingContextProps) {
   const [loading, setLoading] = useState(false);
 
   const updatedValue = useMemo(
